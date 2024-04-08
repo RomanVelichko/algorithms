@@ -62,41 +62,41 @@ class DoubledLinkedList {
   // Метод удаления ноды по значению
   remove(data) {
     if (!this.head) return null;
-  
+
     let current = this.head;
     let deletedNode = null;
-  
+
     while (current) {
       if (current.data === data) {
         if (current === this.head && current === this.tail) {
-        
+
           this.head = null;
           this.tail = null;
 
         } else if (current === this.head) {
-         
+
           this.head = current.next;
           this.head.prev = null;
         } else if (current === this.tail) {
-        
+
           this.tail = current.prev;
           this.tail.next = null;
         } else {
-        
+
           current.next.prev = current.prev;
           current.prev.next = current.next;
         }
-  
-        deletedNode = current.data; 
+
+        deletedNode = current.data;
         break;
       }
-      
+
       current = current.next;
     }
-  
-    return deletedNode; 
+
+    return deletedNode;
   }
-  
+
 
   // Метод обновления ноды
   update(data, newData) {
@@ -124,19 +124,6 @@ class DoubledLinkedList {
     }
 
     return output;
-  }
-
-  // Метод обхода/вывода в обратную сторону в массив значения ноды
-  backward() {
-    const result = [];
-    let current = this.tail;
-
-    while (current !== null) {
-      result.push(current.data);
-      current = current.prev;
-    }
-
-    return result.reverse();
   }
 }
 
