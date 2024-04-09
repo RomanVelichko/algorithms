@@ -1,14 +1,16 @@
 // Структура данных 'очередь'
 class Queue {
-  queue = new Array();
-
+  constructor(){
+    this.queue = new Array();
+  }
+ 
   // Метод добавления данных в конец очереди
-  add(data) {
+  push(data) {
     this.queue.push(data);
   }
 
   // Метод удаления данных из начала очереди
-  remove(data) {
+  shift(data) {
     if (!this.queue.length) return;
 
     this.queue.shift(data);
@@ -20,21 +22,24 @@ class Queue {
     this.queue = new Array();
   }
 
+  // Метод проверки на пустую очередь
+  isEmpty() {
+    return this.queue.length === 0;
+  }
+
  // Метод вывода массива очереди
-  print() {
+  toArray() {
     return this.queue;
   }
 }
 
 const queue = new Queue();
 
-queue.add(1);
-queue.add(2);
-queue.add(3);
-queue.add(4);
+queue.push(1);
+queue.push(2);
+queue.push(3);
+queue.push(4);
 
-console.log("QUEUE", queue.print());
-queue.remove();
-console.log("QUEUE", queue.print());
-queue.clear();
-console.log("QUEUE", queue.print());
+console.log("QUEUE", queue.toArray());
+queue.shift();
+console.log("QUEUE", queue.toArray());

@@ -1,14 +1,16 @@
 // Структура данных 'стэк'
 class Stack {
-  stack = new Array();
+  constructor(){
+    this.stack = new Array();
+  }
 
   // Метод добавления данных в конец стэка
-  add(data) {
+  push(data) {
     this.stack.push(data);
   }
 
   // Метод удаления данных из конца стэка
-  remove(data) {
+  pop(data) {
     if (!this.stack.length) return;
 
     this.stack.pop(data);
@@ -20,21 +22,24 @@ class Stack {
     this.stack = new Array();
   }
 
+  // Метод проверки на пустую очередь
+  isEmpty() {
+    return this.stack.length === 0;
+  }
+
   // Метод вывода массива очереди стэка
-  print() {
+  toArray() {
     return this.stack;
   }
 }
 
 const stack = new Stack();
 
-stack.add(1);
-stack.add(2);
-stack.add(3);
-stack.add(4);
+stack.push(1);
+stack.push(2);
+stack.push(3);
+stack.push(4);
 
-console.log("STACK", stack.print());
-stack.remove();
-console.log("STACK", stack.print());
-stack.clear();
-console.log("STACK", stack.print());
+console.log("STACK", stack.toArray());
+stack.pop();
+console.log("STACK", stack.toArray());

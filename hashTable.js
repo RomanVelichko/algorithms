@@ -39,7 +39,7 @@ class HashTable {
     this.store = new Array(10);
   }
 
-  // Метод вывода значений в массив
+  // Метод вывода ключ-значений в массив
   toArray() {
     const entries = [];
     this.store.forEach((item) => entries.push(...item));
