@@ -40,8 +40,6 @@ class LinkedList {
 
   // Метод поиска ноды по значению
   find(data) {
-    if (!this.head) return;
-
     let current = this.head;
 
     while (current) {
@@ -57,36 +55,36 @@ class LinkedList {
 
   // Метод удаления ноды по значению
   remove(data) {
-    if (!this.head) return;
-   
-    let deletedNode = null;
+    const node = this.find(data);
 
-    // Если удаляемый элемент является первым элементом списка
-    if (this.head.data === data) {
-      deletedNode = this.head.data;
-      this.head = this.head.next
-      return deletedNode;
-    }
+    if (node) {
+      if (node === this.head) {
+        if (this.head === this.tail) {
+          this.head = null;
+          this.tail = null;
+        } else {
+          this.head = this.head.next;
+        }
+      } else if (node === this.tail) {
+        let current = this.head;
 
-    let current = this.head;
-    
-    while (current.next) {
-      if (current.next.data === data) {
-        deletedNode = current.next.data;
-        current.next = current.next.next;
-        return deletedNode;
+        while (current.next !== this.tail) {
+          current = current.next;
+        }
+
+        this.tail = current;
       } else {
-        current = current.next;
+        let current = this.head;
+
+        while (current.next !== this.tail) {
+          current = current.next;
+        }
+
+        current.next = node.next;
       }
+      return true;
     }
-
-    // Если удаляемый элемент является последним элементом списка
-    if (this.tail.data === data) {
-      deletedNode = this.tail.data;
-      this.tail = current;
-    }
-
-    return deletedNode;
+    return false;
   }
 
   // Метод обновления значения ноды

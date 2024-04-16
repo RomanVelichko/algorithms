@@ -61,40 +61,46 @@ class DoubledLinkedList {
 
   // Метод удаления ноды по значению
   remove(data) {
-    if (!this.head) return null;
-
+    const node = this.find(data);
     let current = this.head;
-    let deletedNode = null;
 
-    while (current) {
-      if (current.data === data) {
-        if (current === this.head && current === this.tail) {
-
+    if (node) {
+      if (node === this.head) {
+        if (this.head === this.tail) {
           this.head = null;
           this.tail = null;
-
-        } else if (current === this.head) {
-
-          this.head = current.next;
-          this.head.prev = null;
-        } else if (current === this.tail) {
-
-          this.tail = current.prev;
-          this.tail.next = null;
         } else {
-
-          current.next.prev = current.prev;
-          current.prev.next = current.next;
+          this.head = this.head.next;
+          this.head.prev = null;
         }
 
-        deletedNode = current.data;
-        break;
+      } else if (node === this.tail) {
+
+        while (current.next !== this.tail) {
+          current = current.next;
+        }
+        
+        if (this.head.next === this.tail) {
+          this.tail = this.head;
+          this.tail.next = null;
+        } else {
+          this.tail = this.tail.prev;
+          this.tail.next = null;
+        }
+      } else {
+
+        while (current.next !== this.tail) {
+          current = current.next;
+        }
+
+        current.next.prev = current.prev;
+        current.prev.next = current.next;
       }
 
-      current = current.next;
+      return true;
     }
 
-    return deletedNode;
+    return false;
   }
 
 
