@@ -1,4 +1,4 @@
-class NodeCircleList {
+class Node {
   constructor(data, next = null) {
     this.data = data;
     this.next = next;
@@ -11,112 +11,115 @@ class CircleLinkedList {
     this.tail = null;
   }
 
-  // Метод добавления новой ноды в конец списка
-  append(data) {
-    const node = new NodeCircleList(data);
-
-    if (!this.head) {
-      this.head = node;
-      this.tail = node;
-      node.next = node;
+  // Метод добавления новой ноды в начало списка
+  prepend(data) {
+    const newNode = new Node(data);
+   
+    if (!this.head) { 
+      this.head = newNode; 
+      this.tail = newNode; 
+      this.tail.next = this.head; 
     } else {
-      node.next = this.head;
-      this.tail.next = node;
-      this.tail = node;
+      newNode.next = this.head;
+      this.tail.next = newNode;
+      this.head = newNode;
     }
   }
 
-  // Метод добавления новой ноды в начало списка
-  prepend(data) {
-    const node = new NodeCircleList(data);
+  // Метод добавления новой ноды в конец списка
+  append(data) {
+    const newNode = new Node(data);
+
     if (!this.head) {
-      this.head = node;
-      this.tail = node;
-      this.tail.next = node;
+      this.head = newNode;
+      this.tail = newNode;
+      this.tail.next = this.head;
     } else {
-      node.next = this.head;
-      this.tail.next = node;
-      this.head = node;
+      this.tail.next = newNode;
+      newNode.next = this.head;
+      this.tail = newNode;
     }
   }
 
   // Метод поиска ноды по значению
   find(data) {
-    if (!this.head) return;
-
     let current = this.head;
-    let previous = this.tail
 
     do {
       if (current.data === data) {
-        return { current, previous };
+        return current;
       }
 
-      previous = current;
       current = current.next;
     } while (current !== this.head);
 
     return false;
   }
 
+  // Метод обновления значения ноды
+  update(data, newData) {
+    const node = this.find(data);
+    
+    if (node !== null) {
+      node.data = newData;
+      
+      return true;
+    }
+    
+    return false; 
+  }
 
   // Метод удаления ноды по значению
   remove(data) {
     const node = this.find(data);
-
-    if (!node) return false;
-
-    if (node.current === this.head) {
-      if (this.head === this.tail) {
-        this.head = null;
-        this.tail = null;
-      } else {
-        this.head = this.head.next;
-        this.tail.next = this.head;
-      }
-    }
-
-    if (node.current !== this.head && node.current !== this.tail) {
-      node.previous.next = node.current.next
-    }
-
-    if (node.current === this.tail) {
-      this.tail = node.previous;
-      node.previous.next = this.head;
-    }
-
-    return node.current.data;
-  }
-
-  // Метод обновления значения ноды
-  update(data, newData) {
-    if (!this.head) return false;
-
-    let node = this.find(data);
-
-    if (!node) return false;
-
+  
     if (node) {
-      node.current.data = newData;
+      if (node === this.head) { // Удаление, если нода - голова
+        if (this.head === this.tail) { 
+          this.head = null;
+          this.tail = null;
+        } else {
+          this.head = this.head.next;
+          this.tail.next = this.head;
+        }
+      } else if (node === this.tail) { // Удаление, если нода - это хвост
+        let current = this.head;
+
+        while (current.next !== this.tail) {
+          current = current.next;
+        }
+        
+        this.tail = current;             
+        this.tail.next = this.head;
+      } else {                            // Удаление из середины
+        let current = this.head;
+
+        while (current.next !== node) {
+          current = current.next;
+        }
+
+        current.next = node.next // Переписываем ссылку предыдущей ноды на следующую за удаляемой
+      }
+
       return true;
     }
 
     return false;
   }
 
+
   // Метод обхода/вывода значений нод в массив
   toArray() {
     const result = [];
 
-    if (!this.head) return result;
+    if (!this.head) return;
 
     let current = this.head;
-    let initialNode = this.head;
 
     do {
       result.push(current.data);
       current = current.next;
-    } while (current !== initialNode);
+    } while (current !== this.head);
 
     return result;
   }
@@ -129,7 +132,4 @@ clist.append("hello");
 clist.append("bye");
 clist.append("bro");
 clist.prepend("yo");
-
-console.log("FIND CIRC", clist.find("bye"));
-console.log("UPDATE CIRC", clist.update("hello", "123"));
-console.log("CIRCULAR CIRC", clist.toArray());
+clist.toArray();
