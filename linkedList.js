@@ -73,6 +73,7 @@ class LinkedList {
         }
 
         this.tail = current;
+        this.tail.next = null;
       } else {
         let current = this.head;
 
