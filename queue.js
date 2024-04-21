@@ -1,45 +1,71 @@
+// Реализовать метод удаления как O(1), а не O(n)
 // Структура данных 'очередь'
+// < Ready >
+
+/** Структура очередь */
+class NodeQueue {
+  constructor(data, prev = null, next = null) {
+    this.data = data;
+    this.prev = prev;
+    this.next = next;
+  }
+}
+
 class Queue {
   constructor(){
-    this.queue = new Array();
+    this.head = null;
+    this.tail = null;
   }
  
   // Метод добавления данных в конец очереди
-  push(data) {
-    this.queue.push(data);
+  enqueue(data) {
+    const newNode = new NodeQueue(data, this.tail)
+
+    if(this.tail) {
+      this.tail.next = newNode;
+    }
+
+    if (!this.head) {
+      this.head = newNode
+    }
+    
+    this.tail = newNode;
   }
 
   // Метод удаления данных из начала очереди
-  shift(data) {
-    if (!this.queue.length) return;
+  dequeue() {
+    const deletedNode = this.head;
 
-    this.queue.shift(data);
-    return true;
-  }
+    if (this.head === this.tail) {
+      this.head = null;
+      this.tail = null;
+    } else {
+      this.head = this.head.next;
+      this.head.prev = null;
+    }
 
-  // Метод очистки очереди/обнуление 
-  clear() {
-    this.queue = new Array();
+    return deletedNode;
   }
 
   // Метод проверки на пустую очередь
   isEmpty() {
-    return this.queue.length === 0;
+    if (this.head) return false
+    else return true;
   }
 
- // Метод вывода массива очереди
-  toArray() {
-    return this.queue;
+ // Метод вывода первого значения очереди
+ peek() {
+    return this.head.data;
   }
 }
 
 const queue = new Queue();
 
-queue.push(1);
-queue.push(2);
-queue.push(3);
-queue.push(4);
+queue.enqueue(1);
+queue.enqueue(2);
+queue.enqueue(3); 
+queue.enqueue(4);
 
-console.log("QUEUE", queue.toArray());
-queue.shift();
-console.log("QUEUE", queue.toArray());
+console.log("QUEUE", queue.peek());
+console.log(queue.dequeue());
+console.log("QUEUE", queue.peek());

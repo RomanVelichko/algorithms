@@ -1,58 +1,68 @@
+// TODO : Переделать реализацию добавления так чтоб
+// хотя бы перезатирало когда добавляем с таким же ключом
+// < Ready >
+
+/** Структура данных хэш-таблицы */
 class HashTable {
-  constructor(){
-    this.store = new Array(10);
+  constructor(lenght = 10) {
+    this.store = new Array(lenght);
+    this.size = 0
   }
 
   // Метод для хэширования ключа
   hash(key) {
+    const keyStr = String(key);
     let sum = 0;
-    for (let char of key) {
-      sum += key.charCodeAt(char);
+    for (let i = 0; i < keyStr.length; i++) {
+      sum += keyStr.charCodeAt(i);
     }
-
     return sum % this.store.length;
   }
 
   // Метод добавления данных в хэштаблицу
-  add(key, value) {
-    this.store[this.hash(key)] = this.store[this.hash(key)] || [];
-    this.store[this.hash(key)].push({ key, value });
+  set(key, value) {
+    const index = this.hash(key);
+    this.store[index] = { ...this.store[index], [key]: value };
+    this.size++;
   }
 
   // Метод получения данных из хэштаблицы по ключу
   get(key) {
-    return this.store[this.hash(key)].find((item) => item.key === key)?.value;
+    const index = this.hash(key);
+    return this.store[index][key];
   }
 
   // Метод удаления по ключу
   remove(key) {
-    const bucket = this.store[this.hash(key)];
+    const index = this.hash(key);
+    delete this.store[index][key];
+    this.size--;
+  }
 
-    if (!bucket) return;
-
-    const index = bucket.findIndex((item) => item.key === key);
-    bucket.splice(index, 1);
+  // Метод вывода всех ключ-значений в массив
+  toArray() {
+    const entries = [];
+    if (this.store.length) {
+      this.store.forEach((bucket) => {
+        for (const [key, value] of Object.entries(bucket)) {
+          entries.push({ key, value });
+        }
+      })
+    }
+    return entries;
   }
 
   // Метод сброса всей хэштаблицы в дефолт
   clear() {
-    this.store = new Array(10);
-  }
-
-  // Метод вывода ключ-значений в массив
-  toArray() {
-    const entries = [];
-    this.store.forEach((item) => entries.push(...item));
-    return entries;
+    this.length = 0;
+    return this.store = {};
   }
 }
 
 const dict = new HashTable();
 
-dict.add("ab", 1);
-dict.add("ba", 2);
-dict.add("foo", 3);
-dict.add("bar", 4);
-dict.add("kkk", 45);
-
-dict.toArray();
+dict.set("ab", 1);
+dict.set("ba", 2);
+dict.set("foo", 3);
+dict.set("bar", 4);
+dict.set("kkk", 5);
