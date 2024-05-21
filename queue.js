@@ -1,5 +1,6 @@
-// Реализовать метод удаления как O(1), а не O(n)
-// Структура данных 'очередь'
+// -Реализовать метод удаления как O(1), а не O(n)
+//  Структура данных 'очередь'
+// - Исправить метод isEmpty
 // < Ready >
 
 /** Структура очередь */
@@ -49,17 +50,17 @@ class Queue {
 
   // Метод проверки на пустую очередь
   isEmpty() {
-    if (this.head) return false
-    else return true;
+    return !this.head;
   }
 
  // Метод вывода первого значения очереди
- peek() {
+  peek() {
+    if (this.isEmpty()) return null
     return this.head.data;
   }
 }
 
-const queue = new Queue();
+const queue = new Queue();  
 
 queue.enqueue(1);
 queue.enqueue(2);
